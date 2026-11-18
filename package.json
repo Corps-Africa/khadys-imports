@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "tsx --env-file-if-exists=.env.local scripts/migrate.ts && next build",
+    "build": "tsx scripts/migrate.ts && next build",
     "start": "next start",
     "lint": "eslint",
-    "db:setup": "tsx --env-file-if-exists=.env.local scripts/migrate.ts",
-    "seed:demo": "tsx --env-file-if-exists=.env.local scripts/seed-demo.ts"
+    "db:setup": "tsx scripts/migrate.ts",
+    "seed:demo": "tsx scripts/seed-demo.ts"
   },
   "dependencies": {
     "@vercel/blob": "^2.9.0",
@@ -31,5 +31,8 @@
     "tailwindcss": "4.3.3",
     "tsx": "^4.23.15",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9.0"
   }
 }

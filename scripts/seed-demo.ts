@@ -3,9 +3,16 @@
  * while the client loads their real catalogue. Delete them from /admin.
  *   npm run seed:demo
  */
+import "./load-env";
 import postgres from "postgres";
+import { getDatabaseUrl, MISSING_DB_MESSAGE } from "../src/db/url";
 
-const sql = postgres(process.env.DATABASE_URL!, { max: 1, prepare: false });
+const url = getDatabaseUrl();
+if (!url) {
+  console.error(MISSING_DB_MESSAGE);
+  process.exit(1);
+}
+const sql = postgres(url, { max: 1, prepare: false });
 
 const samples: [string, string, number | null, number | null, string, boolean][] = [
   // name, category slug, price, oldPrice, origin, featured

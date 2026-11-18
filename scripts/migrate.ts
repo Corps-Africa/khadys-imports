@@ -3,11 +3,13 @@
  * (see "build" in package.json), so a fresh Neon database on Vercel
  * gets its tables on the first deploy. Safe to run any number of times.
  */
+import "./load-env";
 import postgres from "postgres";
+import { getDatabaseUrl, MISSING_DB_MESSAGE } from "../src/db/url";
 
-const url = process.env.DATABASE_URL;
+const url = getDatabaseUrl();
 if (!url) {
-  console.error("✖ DATABASE_URL is not set — cannot set up the database.");
+  console.error("\n✖ " + MISSING_DB_MESSAGE + "\n");
   process.exit(1);
 }
 
@@ -80,7 +82,7 @@ async function main() {
 }
 
 main().catch(async (err) => {
-  console.error("✖ Database setup failed:", err);
+  console.error("\n✖ Database setup failed. Check that the Neon database is connected to this Vercel project and is not paused.\n", err);
   await sql.end();
   process.exit(1);
 });
