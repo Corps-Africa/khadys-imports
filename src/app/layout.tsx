@@ -1,9 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat, Oswald } from "next/font/google";
+import { Montserrat, Oswald, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const body = Montserrat({ variable: "--font-body", subsets: ["latin"], display: "swap" });
 const heading = Oswald({ variable: "--font-heading", subsets: ["latin"], display: "swap" });
+// Elegant italic serif used sparingly for accents (eyebrows, quotes, highlighted words).
+const serif = Playfair_Display({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["500", "600"],
+  display: "swap",
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -29,7 +37,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en-GH" className={`${body.variable} ${heading.variable} h-full antialiased`}>
+    <html lang="en-GH" className={`${body.variable} ${heading.variable} ${serif.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );

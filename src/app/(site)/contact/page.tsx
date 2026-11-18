@@ -3,6 +3,8 @@ import { getSettings } from "@/lib/data";
 import { splitPhones, telLink, whatsappLink } from "@/lib/format";
 import { ClockIcon, MailIcon, PhoneIcon, PinIcon, TruckIcon, WhatsAppIcon } from "@/components/site/icons";
 import { SocialLinks } from "@/components/site/social";
+import { Eyebrow } from "@/components/site/section-heading";
+import { HeroBackdrop } from "@/components/site/hero";
 
 export const metadata: Metadata = {
   title: "Contact us",
@@ -16,27 +18,28 @@ export default async function ContactPage() {
 
   return (
     <>
-      <section className="bg-ink-texture text-white">
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">We&apos;d love to hear from you</p>
-          <h1 className="mt-1 font-display text-4xl uppercase tracking-wide sm:text-5xl">
-            <span className="text-gold-gradient">Contact us</span>
+      <section className="bg-ink-texture relative overflow-hidden text-white">
+        <HeroBackdrop />
+        <div className="relative mx-auto max-w-6xl px-4 py-12 sm:py-16">
+          <Eyebrow>We&apos;d love to hear from you</Eyebrow>
+          <h1 className="mt-1 animate-fade-up font-display text-4xl uppercase tracking-wide [animation-delay:120ms] sm:text-5xl">
+            <span className="text-gold-shimmer">Contact us</span>
           </h1>
-          <p className="mt-3 max-w-xl text-white/70">
+          <p className="mt-3 max-w-xl animate-fade-up text-white/70 [animation-delay:240ms]">
             The fastest way to reach us is WhatsApp. Ask about a product, place an order or request our wholesale list.
           </p>
         </div>
       </section>
 
       <section className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-[1fr_1.2fr]">
-        <div className="space-y-4">
+        <div data-reveal="left" className="space-y-4">
           <a
             href={whatsappLink(s.whatsappNumber, `Hello ${s.businessName}!`)}
             target="_blank"
             rel="noopener"
-            className="flex items-center gap-4 rounded-2xl bg-whatsapp p-5 text-white shadow-lg transition hover:bg-whatsapp-dark"
+            className="lift group flex items-center gap-4 rounded-2xl bg-whatsapp p-5 text-white shadow-lg hover:bg-whatsapp-dark"
           >
-            <WhatsAppIcon className="h-9 w-9" />
+            <WhatsAppIcon className="h-9 w-9 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
             <span>
               <span className="block text-sm opacity-90">Chat with us on WhatsApp</span>
               <span className="font-display text-2xl tracking-wide">Start a chat</span>
@@ -81,7 +84,7 @@ export default async function ContactPage() {
           </div>
         </div>
 
-        <div className="min-h-[320px] overflow-hidden rounded-2xl border border-line bg-sand">
+        <div data-reveal="right" className="min-h-[320px] overflow-hidden rounded-2xl border border-line bg-sand">
           {mapQuery ? (
             <iframe
               title={`Map showing ${s.businessName}`}

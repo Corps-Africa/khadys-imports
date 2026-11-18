@@ -60,9 +60,11 @@ async function ProductDetail({ params }: { params: PageProps<"/products/[slug]">
       </nav>
 
       <div className="grid gap-8 md:grid-cols-2 lg:gap-12">
-        <Gallery images={p.images} name={p.name} />
+        <div className="animate-fade-up">
+          <Gallery images={p.images} name={p.name} />
+        </div>
 
-        <div>
+        <div className="animate-fade-up [animation-delay:150ms]">
           <div className="mb-3 flex flex-wrap items-center gap-2">
             <AvailabilityBadge value={p.availability} />
             {p.origin && (
@@ -114,10 +116,13 @@ async function ProductDetail({ params }: { params: PageProps<"/products/[slug]">
 
       {related.length > 0 && (
         <section className="mt-16">
-          <h2 className="mb-6 font-display text-2xl uppercase tracking-wide">You may also like</h2>
+          <p data-reveal className="font-accent text-lg italic text-gold-dark">More to love</p>
+          <h2 data-reveal className="mb-6 font-display text-2xl uppercase tracking-wide">You may also like</h2>
           <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
-            {related.map((r) => (
-              <ProductCard key={r.id} p={r} />
+            {related.map((r, i) => (
+              <div key={r.id} data-reveal style={{ "--reveal-delay": `${i * 90}ms` } as React.CSSProperties}>
+                <ProductCard p={r} />
+              </div>
             ))}
           </div>
         </section>

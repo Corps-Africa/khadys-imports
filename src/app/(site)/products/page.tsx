@@ -3,6 +3,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { getCategories, getPublishedProducts } from "@/lib/data";
 import { ProductCard } from "@/components/site/product-card";
+import { Eyebrow } from "@/components/site/section-heading";
+import { HeroBackdrop } from "@/components/site/hero";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -12,13 +14,14 @@ export const metadata: Metadata = {
 export default function ProductsPage(props: PageProps<"/products">) {
   return (
     <>
-      <section className="bg-ink-texture text-white">
-        <div className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">Our shop</p>
-          <h1 className="mt-1 font-display text-4xl uppercase tracking-wide sm:text-5xl">
-            <span className="text-gold-gradient">All products</span>
+      <section className="bg-ink-texture relative overflow-hidden text-white">
+        <HeroBackdrop />
+        <div className="relative mx-auto max-w-6xl px-4 py-10 sm:py-14">
+          <Eyebrow>Our shop</Eyebrow>
+          <h1 className="mt-1 animate-fade-up font-display text-4xl uppercase tracking-wide [animation-delay:120ms] sm:text-5xl">
+            <span className="text-gold-shimmer">All products</span>
           </h1>
-          <p className="mt-3 max-w-xl text-white/70">
+          <p className="mt-3 max-w-xl animate-fade-up text-white/70 [animation-delay:240ms]">
             Add items to your basket and send your order to us on WhatsApp. We&apos;ll confirm the delivery fee and payment.
           </p>
         </div>
@@ -47,7 +50,7 @@ async function Catalogue({ searchParams }: { searchParams: PageProps<"/products"
   const visibleCats = cats.filter((c) => all.some((p) => p.categoryId === c.id));
   const chip = (active: boolean) =>
     `shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition ${
-      active ? "border-ink bg-ink text-gold-light" : "border-line bg-white hover:border-gold"
+      active ? "border-ink bg-ink text-gold-light shadow-md" : "border-line bg-white hover:-translate-y-0.5 hover:border-gold"
     }`;
   const href = (cat: string) => {
     const params = new URLSearchParams();
@@ -99,7 +102,9 @@ async function Catalogue({ searchParams }: { searchParams: PageProps<"/products"
       {products.length ? (
         <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
           {products.map((p, i) => (
-            <ProductCard key={p.id} p={p} priority={i < 4} />
+            <div key={p.id} data-reveal style={{ "--reveal-delay": `${(i % 4) * 80}ms` } as React.CSSProperties}>
+              <ProductCard p={p} priority={i < 4} />
+            </div>
           ))}
         </div>
       ) : (

@@ -48,14 +48,14 @@ export function ProductCard({ p, priority }: { p: PublicProduct; priority?: bool
   const soldOut = p.availability === "sold_out";
   const onSale = p.price !== null && p.oldPrice !== null && p.oldPrice > p.price;
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition hover:-translate-y-0.5 hover:shadow-lg">
+    <article className="lift group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white hover:border-gold/50">
       <Link href={`/products/${p.slug}`} className="relative block aspect-square overflow-hidden bg-sand">
         <ProductImage
           src={p.images[0]}
           alt={p.name}
           priority={priority}
           sizes="(min-width:1024px) 280px, (min-width:640px) 33vw, 50vw"
-          className="transition duration-500 group-hover:scale-105"
+          className="transition duration-700 ease-out group-hover:scale-110"
         />
         <div className="absolute left-2 top-2 flex flex-wrap gap-1.5">
           {onSale && <span className="rounded-full bg-gold px-2.5 py-0.5 text-[11px] font-bold text-ink">Sale</span>}

@@ -222,6 +222,7 @@ function CartDrawer({ whatsappNumber, businessName }: { whatsappNumber: string; 
 
 export function CartButton() {
   const { count, setOpen } = useCart();
+  // Re-key the badge whenever the count changes so the "pop" animation replays.
   return (
     <button
       onClick={() => setOpen(true)}
@@ -233,7 +234,7 @@ export function CartButton() {
         <path d="M9 7V5a3 3 0 0 1 6 0v2" />
       </svg>
       {count > 0 && (
-        <span className="absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-gold px-1 text-[11px] font-bold text-ink">
+        <span key={count} className="animate-pop absolute -right-0.5 -top-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-gold px-1 text-[11px] font-bold text-ink">
           {count}
         </span>
       )}
@@ -256,6 +257,12 @@ export function AddToCartButton({
 }) {
   const { add } = useCart();
   const [qty, setQtyLocal] = useState(1);
+  const [added, setAdded] = useState(false);
+  useEffect(() => {
+    if (!added) return;
+    const t = setTimeout(() => setAdded(false), 1400);
+    return () => clearTimeout(t);
+  }, [added]);
   return (
     <div className="flex gap-2">
       {withQty && (
@@ -269,8 +276,21 @@ export function AddToCartButton({
           </button>
         </div>
       )}
-      <button disabled={disabled} onClick={() => add(product, qty)} className={`${className} flex-1`}>
-        {label}
+      <button
+        disabled={disabled}
+        onClick={() => {
+          add(product, qty);
+          setAdded(true);
+        }}
+        className={`${className} flex-1 ${added ? "!bg-emerald-600 !text-white" : ""}`}
+      >
+        {added ? (
+          <span key="added" className="animate-pop">
+            Added ✓
+          </span>
+        ) : (
+          label
+        )}
       </button>
     </div>
   );

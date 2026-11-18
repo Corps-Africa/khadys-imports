@@ -16,6 +16,52 @@
 
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-heading), "Arial Narrow", ui-sans-serif, sans-serif;
+  --font-accent: var(--font-serif), Georgia, "Times New Roman", serif;
+
+  --animate-fade-up: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 1s ease-out both;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-spin-slow: spin 28s linear infinite;
+  --animate-spin-slower: spin 40s linear infinite reverse;
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-shimmer: shimmer 5s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-pop: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-draw: draw 2.4s ease-out both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.55; }
+    80%, 100% { transform: scale(1.7); opacity: 0; }
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+  @keyframes draw {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
 }
 
 html {
@@ -30,6 +76,16 @@ body {
 
 @utility text-gold-gradient {
   background: linear-gradient(180deg, #f8dc85 0%, #d4a537 55%, #a87c1e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Gold text with a slow light sweep, for hero headlines */
+@utility text-gold-shimmer {
+  background: linear-gradient(110deg, #a87c1e 0%, #d4a537 30%, #fbe7a6 50%, #d4a537 70%, #a87c1e 100%);
+  background-size: 250% 100%;
+  animation: var(--animate-shimmer);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -70,4 +126,63 @@ body {
 }
 @utility btn-whatsapp {
   @apply btn bg-whatsapp text-white hover:bg-whatsapp-dark;
+}
+
+/* ---------- Scroll reveal ----------
+   Content is only hidden when JavaScript is running, so it is never lost
+   if scripts fail. <Reveal> adds data-shown when the element scrolls in. */
+@media (scripting: enabled) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal="left"] { transform: translateX(-32px); }
+  [data-reveal="right"] { transform: translateX(32px); }
+  [data-reveal="zoom"] { transform: scale(0.94); }
+  [data-reveal][data-shown] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Draw-on SVG strokes (paths need pathLength="1") */
+.draw-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: var(--animate-draw);
+}
+
+/* Gentle lift for interactive cards */
+.lift {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+.lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -18px rgba(18, 20, 25, 0.35);
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .draw-path {
+    stroke-dashoffset: 0;
+  }
 }

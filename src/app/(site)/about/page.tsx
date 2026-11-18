@@ -4,7 +4,8 @@ import Link from "next/link";
 import { getSettings } from "@/lib/data";
 import { whatsappLink } from "@/lib/format";
 import { BoxesIcon, GlobeIcon, ShieldIcon, TagIcon, WhatsAppIcon } from "@/components/site/icons";
-import { SectionHeading } from "@/components/site/section-heading";
+import { Eyebrow, SectionHeading } from "@/components/site/section-heading";
+import { HeroBackdrop } from "@/components/site/hero";
 
 export const metadata: Metadata = {
   title: "About us",
@@ -23,17 +24,18 @@ export default async function AboutPage() {
   const s = await getSettings();
   return (
     <>
-      <section className="bg-ink-texture text-white">
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">Our story</p>
-          <h1 className="mt-1 font-display text-4xl uppercase tracking-wide sm:text-5xl">
-            <span className="text-gold-gradient">About {s.businessName}</span>
+      <section className="bg-ink-texture relative overflow-hidden text-white">
+        <HeroBackdrop />
+        <div className="relative mx-auto max-w-6xl px-4 py-12 sm:py-16">
+          <Eyebrow>Our story</Eyebrow>
+          <h1 className="mt-1 animate-fade-up font-display text-4xl uppercase tracking-wide [animation-delay:120ms] sm:text-5xl">
+            <span className="text-gold-shimmer">About {s.businessName}</span>
           </h1>
         </div>
       </section>
 
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 md:grid-cols-2">
-        <div className="space-y-4 text-[16px] leading-relaxed text-ink/85">
+        <div data-reveal="left" className="space-y-4 text-[16px] leading-relaxed text-ink/85">
           {s.aboutText.split(/\n\s*\n/).map((para, i) => (
             <p key={i}>{para}</p>
           ))}
@@ -46,8 +48,8 @@ export default async function AboutPage() {
             </a>
           </div>
         </div>
-        <div className="relative aspect-square overflow-hidden rounded-3xl border border-line shadow-xl">
-          <Image src="/brand/logo-mockup.jpg" alt={`${s.businessName} logo`} fill sizes="(min-width:768px) 540px, 100vw" className="object-cover" />
+        <div data-reveal="right" className="group relative aspect-square overflow-hidden rounded-3xl border border-line shadow-xl">
+          <Image src="/brand/logo-mockup.jpg" alt={`${s.businessName} logo`} fill sizes="(min-width:768px) 540px, 100vw" className="object-cover transition duration-700 group-hover:scale-105" />
         </div>
       </section>
 
@@ -60,9 +62,14 @@ export default async function AboutPage() {
               { Icon: ShieldIcon, t: "Quality", d: "We pick products we would be proud to use ourselves." },
               { Icon: GlobeIcon, t: "Trendy", d: `Fresh, in-demand items sourced from ${s.shipsFrom}.` },
               { Icon: BoxesIcon, t: "Reliable", d: "Clear communication from order to delivery." },
-            ].map(({ Icon, t, d }) => (
-              <div key={t} className="rounded-2xl border border-line bg-cream p-6">
-                <span className="mb-4 grid h-11 w-11 place-items-center rounded-full bg-ink text-gold-light">
+            ].map(({ Icon, t, d }, i) => (
+              <div
+                key={t}
+                data-reveal
+                style={{ "--reveal-delay": `${i * 100}ms` } as React.CSSProperties}
+                className="lift group rounded-2xl border border-line bg-cream p-6"
+              >
+                <span className="mb-4 grid h-11 w-11 place-items-center rounded-full bg-ink text-gold-light transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
                   <Icon />
                 </span>
                 <h3 className="font-display text-xl uppercase tracking-wide">{t}</h3>
@@ -76,11 +83,16 @@ export default async function AboutPage() {
       <section className="mx-auto max-w-3xl px-4 py-14">
         <SectionHeading eyebrow="Good to know" title="Frequently asked questions" center />
         <div className="space-y-3">
-          {FAQ.map(([q, a]) => (
-            <details key={q} className="group rounded-xl border border-line bg-white px-5 py-4 open:shadow-sm">
+          {FAQ.map(([q, a], i) => (
+            <details
+              key={q}
+              data-reveal
+              style={{ "--reveal-delay": `${i * 70}ms` } as React.CSSProperties}
+              className="group rounded-xl border border-line bg-white px-5 py-4 transition-shadow open:border-gold/50 open:shadow-md"
+            >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
                 {q}
-                <span className="text-gold-dark transition group-open:rotate-45">+</span>
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-sand text-gold-dark transition duration-300 group-open:rotate-45 group-open:bg-gold group-open:text-ink">+</span>
               </summary>
               <p className="mt-3 text-sm leading-relaxed text-muted">{a}</p>
             </details>
