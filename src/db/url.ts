@@ -19,7 +19,7 @@ export function getDatabaseUrl(): string | undefined {
 
 /** Names (never values) of database-looking variables, to help diagnose a missing connection. */
 export function databaseEnvNames() {
-  return Object.keys(process.env).filter((k) => /PG|POSTGRES|DATABASE|NEON/i.test(k)).sort();
+  return Object.keys(process.env).filter((k) => /^PG|POSTGRES|DATABASE|NEON/i.test(k)).sort();
 }
 
 export const MISSING_DB_MESSAGE =
