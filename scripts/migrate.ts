@@ -5,11 +5,16 @@
  */
 import "./load-env";
 import postgres from "postgres";
-import { getDatabaseUrl, MISSING_DB_MESSAGE } from "../src/db/url";
+import { databaseEnvNames, getDatabaseUrl, MISSING_DB_MESSAGE } from "../src/db/url";
 
 const url = getDatabaseUrl();
 if (!url) {
-  console.error("\n✖ " + MISSING_DB_MESSAGE + "\n");
+  console.error("\n✖ " + MISSING_DB_MESSAGE);
+  const names = databaseEnvNames();
+  console.error(
+    `  Database-related variables visible to this build (${process.env.VERCEL_ENV ?? "local"}): ` +
+      (names.length ? names.join(", ") : "none") + "\n",
+  );
   process.exit(1);
 }
 
